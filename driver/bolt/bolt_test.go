@@ -18,8 +18,8 @@ func TestBolt(t *testing.T) {
 		t.Fatalf("failed to open bolt: %v", err)
 	}
 	defer func() {
-		db.Close()
-		os.Remove(dbPath)
+		_ = db.Close()
+		_ = os.Remove(dbPath)
 	}()
 
 	dbasetest.Suite(t, db)

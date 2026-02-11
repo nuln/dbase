@@ -3,9 +3,10 @@ package gorm_test
 import (
 	"testing"
 
+	"gorm.io/driver/sqlite"
+
 	"github.com/nuln/dbase/dbasetest"
 	"github.com/nuln/dbase/driver/gorm"
-	"gorm.io/driver/sqlite"
 )
 
 func TestGormSQLite(t *testing.T) {
@@ -13,7 +14,7 @@ func TestGormSQLite(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	dbasetest.Suite(t, db)
 }

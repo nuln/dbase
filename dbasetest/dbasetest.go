@@ -5,9 +5,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/nuln/dbase"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/nuln/dbase"
 )
 
 // TestModel is the standard model used by [Suite].
@@ -274,7 +275,7 @@ func Suite(t *testing.T, database dbase.Database) {
 	t.Run("TransactionRollback", func(t *testing.T) {
 		countBefore, _ := database.Count(ctx, &TestModel{}, nil)
 		err := database.Transaction(ctx, func(tx dbase.Database) error {
-			tx.Create(ctx, &TestModel{Name: "TxRollback", Email: "txr@test.com"})
+			_ = tx.Create(ctx, &TestModel{Name: "TxRollback", Email: "txr@test.com"})
 			return assert.AnError
 		})
 		assert.Error(t, err)
@@ -287,7 +288,7 @@ func Suite(t *testing.T, database dbase.Database) {
 
 	t.Run("Delete", func(t *testing.T) {
 		user := &TestModel{Name: "ToDelete", Email: "td@test.com"}
-		database.Create(ctx, user)
+		_ = database.Create(ctx, user)
 		err := database.Delete(ctx, user, user.ID)
 		require.NoError(t, err)
 
